@@ -26,7 +26,7 @@ class SpongePlugin implements Plugin<Project> {
         project.extensions.create("plugin", SpongePluginExtension)
 
         project.dependencies {
-            compile "org.spongepowered:spongeapi:${project.extensions.getByType(SpongeExtension).version}"
+            compile "org.spongepowered:spongeapi:${extension(project, SpongeExtension).version}"
         }
 
         replaceSourceTokens(project)
@@ -37,6 +37,16 @@ class SpongePlugin implements Plugin<Project> {
             plguin_after
             plguin_required_after
         }
+
+        project.task('spongeLicense') {
+            def l = new File('LICENSE')
+            l.createNewFile()
+            l.text = 'https://raw.githubusercontent.com/SpongePowered/SpongeAPI/master/LICENSE.txt'.toURL().text
+        }
+    }
+
+    private static <T> T extension(Project project, Class<T> c) {
+        project.extensions.getByType(c) as T
     }
 
     private final void replaceSourceTokens(Project project) {
@@ -55,8 +65,8 @@ class SpongePlugin implements Plugin<Project> {
 
         (project.getTasksByName('replaceSourceTokens', false)[0] as SourceCopyTask)
                 .replace(['@[plugin.version]': project.version,
-                          '@[plugin.id]'     : project.extensions.getByType(SpongePluginExtension).id,
-                          '@[plugin.name]'   : project.extensions.getByType(SpongePluginExtension).name])
+                          '@[plugin.id]'     : extension(project, SpongePluginExtension).id,
+                          '@[plugin.name]'   : extension(project, SpongePluginExtension).name])
     }
 
     private static File projectFile(String path, Project project) {
