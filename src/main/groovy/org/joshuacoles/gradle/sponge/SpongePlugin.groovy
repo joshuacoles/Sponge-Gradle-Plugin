@@ -15,34 +15,36 @@ class SpongePlugin implements Plugin<Project> {
     void apply(Project project) {
         this.constants = new PluginConstants(project)
         constants.remake()
+        project.with {
+            repositories.maven {
+                url 'http://repo.spongepowered.org/maven'
+            }
 
-        project.repositories.maven {
-            url 'http://repo.spongepowered.org/maven'
-        }
+            repositories.mavenCentral()
 
-        project.repositories.mavenCentral()
+            extensions.create("sponge", SpongeExtension)
+            extensions.create("plugin", SpongePluginExtension)
 
-        project.extensions.create("sponge", SpongeExtension)
-        project.extensions.create("plugin", SpongePluginExtension)
+            dependencies {
+                compile "org.spongepowered:spongeapi:${extension(project, SpongeExtension).version}"
+            }
 
-        project.dependencies {
-            compile "org.spongepowered:spongeapi:${extension(project, SpongeExtension).version}"
-        }
+            replaceSourceTokens(project)
 
-        replaceSourceTokens(project)
+            configurations {
+                plguin_before
+                plguin_required_before
+                plguin_after
+                plguin_required_after
+            }
 
-        project.configurations {
-            plguin_before
-            plguin_required_before
-            plguin_after
-            plguin_required_after
-        }
-
-        project.task('spongeLicense') {
-            def l = new File('LICENSE')
-            l.createNewFile()
-            l.text = 'https://raw.githubusercontent.com/SpongePowered/SpongeAPI/master/LICENSE.txt'.toURL().text
-        }
+            task('spongeLicense') {
+                new File('LICENSE').with {
+                    createNewFile()
+                    text = 'https://raw.githubusercontent.com/SpongePowered/SpongeAPI/master/LICENSE.txt'.toURL().text
+                }
+            }
+        } 
     }
 
     private static <T> T extension(Project project, Class<T> c) {
