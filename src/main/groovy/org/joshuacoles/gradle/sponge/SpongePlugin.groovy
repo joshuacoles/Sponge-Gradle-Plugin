@@ -22,6 +22,9 @@ class SpongePlugin implements Plugin<Project> {
 
             repositories.mavenCentral()
 
+            apply plugin: 'idea'
+            apply plugin: 'eclipse'
+
             extensions.create("sponge", SpongeExtension)
             extensions.create("plugin", SpongePluginExtension)
 
@@ -80,7 +83,7 @@ class SpongePlugin implements Plugin<Project> {
     }
 
     public static <T extends Task> T makeTask(Project proj, String name, Class<T> type) {
-        return (T) proj.task([name: name, type: type], name);
+        return (T) proj.task(type: type, name);
     }
 
     /*
