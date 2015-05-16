@@ -41,7 +41,8 @@ class SourceCopyTask extends DefaultTask {
 
         // get output
         File output = this.output
-        output.remakeDir()
+        project.delete(output)
+        project.mkdir(output)
         output = output.canonicalFile
 
         // resolve replacements

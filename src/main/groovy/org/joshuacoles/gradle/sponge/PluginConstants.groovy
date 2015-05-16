@@ -25,7 +25,7 @@ class PluginConstants {
     void clean() {
         this.metaClass.properties.each {
             if (it.type == File && it.name.contains('DIR')) {
-                (it.getProperty(this) as File).deleteDir()
+                project.delete(it.getProperty(this))
             }
         }
     }
@@ -33,7 +33,7 @@ class PluginConstants {
     void make() {
         this.metaClass.properties.each {
             if (it.type == File && it.name.contains('DIR')) {
-                (it.getProperty(this) as File).mkdirs()
+                project.mkdir(it.getProperty(this))
             }
         }
     }

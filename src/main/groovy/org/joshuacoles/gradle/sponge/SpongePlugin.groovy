@@ -1,5 +1,6 @@
 package org.joshuacoles.gradle.sponge
 
+import org.codehaus.groovy.runtime.metaclass.MetaClassRegistryImpl
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -13,6 +14,8 @@ class SpongePlugin implements Plugin<Project> {
     PluginConstants constants
 
     void apply(Project project) {
+//        registerExtensionModules()
+//        println ""
         this.constants = new PluginConstants(project)
         constants.remake()
         project.with {
@@ -47,11 +50,52 @@ class SpongePlugin implements Plugin<Project> {
                     text = 'https://raw.githubusercontent.com/SpongePowered/SpongeAPI/master/LICENSE.txt'.toURL().text
                 }
             }
-        } 
+        }
     }
 
     private static <T> T extension(Project project, Class<T> c) {
         project.extensions.getByType(c) as T
+    }
+
+    private static void registerExtensionModules() {
+        ClassLoader classLoader = Thread.currentThread().contextClassLoader
+        def registry = GroovySystem.metaClassRegistry as MetaClassRegistryImpl
+        println registry.moduleRegistry.modules.name
+
+//        Map<CachedClass, List<MetaMethod>> map = [:]
+//
+//        ClassLoader classLoader = Thread.currentThread().contextClassLoader
+//
+//        def registry = GroovySystem.metaClassRegistry as MetaClassRegistryImpl
+//
+//        def groovy = registry.moduleRegistry.getModule('groovy-all')
+//        registry.moduleRegistry.removeModule(groovy)
+//
+//        try {
+//            Enumeration<URL> resources = classLoader.getResources(MetaClassRegistryImpl.MODULE_META_INF_FILE)
+//            for (URL url in resources) {
+//                println url
+//                Properties properties = new Properties()
+//                InputStream inStream
+//                try {
+//                    inStream = url.openStream()
+//                    properties.load(inStream)
+//                    registry
+//                            .registerExtensionModuleFromProperties(properties, classLoader, map)
+//                }
+//                catch (IOException e) {
+//                    throw new GroovyRuntimeException("Unable to load module META-INF descriptor", e)
+//                } finally {
+//                    inStream?.close()
+//                }
+//            }
+//        } catch (IOException ignored) {
+//        }
+//        map.each { CachedClass cls, List<MetaMethod> methods ->
+//            println cls
+//            println methods.mopName
+//            cls.setNewMopMethods(methods)
+//        }
     }
 
     private final void replaceSourceTokens(Project project) {

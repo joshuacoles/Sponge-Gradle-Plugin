@@ -1,4 +1,4 @@
-moduleName=zex
+moduleName=z-ext
 moduleVersion=1.0
-extensionClasses=org.joshuacoles.extensions.CollectionsExtension,org.joshuacoles.extensions.GuavaExtension, org.joshuacoles.extensions.JavaExtension
+extensionClasses=org.joshuacoles.extensions.CollectionsExtension,org.joshuacoles.extensions.GuavaExtension,org.joshuacoles.extensions.JavaExtension
 staticExtensionClasses=

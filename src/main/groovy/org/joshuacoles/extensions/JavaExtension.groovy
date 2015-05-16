@@ -40,9 +40,9 @@ class JavaExtension {
         return self.entries().iterable() as Iterable<ZipEntry>
     }
 
-    static void remakeDir(File self) {
-        self.deleteDir()
-        self.mkdirs()
-    }
+//    static void remakeDir(File self) {
+//        self.deleteDir()
+//        self.mkdirs()
+//    }
 
 }
